@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentSetu — Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FF;--card:#FFFFFF;--border:#E8E0FF;--purple:#6D28D9;--purple2:#7C3AED;--purple3:#8B5CF6;--purple-soft:#EDE9FE;--purple-glow:rgba(109,40,217,0.15);--green:#059669;--text:#0F0A1E;--text2:#6B5E8A;--text3:#9E8FC0;--shadow:0 4px 20px rgba(109,40,217,0.08);--sidebar:260px}
+[data-theme="dark"]{--bg:#0A0612;--card:#1A1130;--border:#2D1F50;--purple-soft:#1E1040;--text:#F5F0FF;--text2:#A890D0;--text3:#6B5E8A}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;transition:background .3s,color .3s}
+.sidebar{width:var(--sidebar);background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:18px;font-weight:800;color:var(--text)}
+.logo-name span{color:var(--purple2)}
+.sb-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:600;transition:all .2s;margin-bottom:2px}
+.nav-item:hover,.nav-item.active{background:var(--purple-soft);color:var(--purple2)}
+.nav-ico{width:20px;text-align:center;font-size:16px}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:18px;font-weight:800}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.icon-btn:hover{border-color:var(--purple)}
+.content{padding:24px;flex:1}
+
+/* CURRENT PLAN */
+.current-plan{background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:20px;padding:24px;margin-bottom:28px;color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.cp-label{font-size:13px;font-weight:600;opacity:0.8;margin-bottom:4px}
+.cp-name{font-size:24px;font-weight:800}
+.cp-usage{font-size:13px;opacity:0.8;margin-top:4px}
+.cp-btn{padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.cp-btn:hover{background:rgba(255,255,255,0.25)}
+
+/* PRICING GRID */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;align-items:start}
+.pc{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:24px;position:relative;transition:all .3s}
+.pc:hover{transform:translateY(-4px);box-shadow:0 20px 50px var(--purple-glow)}
+.pc.hot{border-color:var(--purple2);box-shadow:0 0 0 4px var(--purple-soft)}
+.pc.current{border-color:var(--green);box-shadow:0 0 0 4px rgba(5,150,105,0.1)}
+.hot-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap}
+.curr-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:white;font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap}
+.pc-name{font-size:15px;font-weight:700;margin-bottom:10px}
+.pc-amt{font-size:38px;font-weight:800;color:var(--purple2);letter-spacing:-2px;line-height:1;margin-bottom:3px}
+.pc-amt sup{font-size:17px;vertical-align:super;letter-spacing:0}
+.pc-amt sub{font-size:13px;color:var(--text2);font-weight:500;letter-spacing:0}
+.pc-note{font-size:12px;color:var(--text3);margin-bottom:18px}
+.pc-hr{height:1px;background:var(--border);margin-bottom:14px}
+.pc-list{list-style:none;margin-bottom:20px;display:flex;flex-direction:column;gap:7px}
+.pc-list li{font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:6px;line-height:1.5}
+.ck{color:var(--green);font-weight:700;flex-shrink:0}
+.bk{font-size:10px;background:var(--purple-soft);color:var(--purple2);padding:2px 6px;border-radius:4px;font-weight:700;white-space:nowrap}
+.pc-btn{width:100%;padding:12px;border-radius:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all .2s}
+.pc-out{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.pc-out:hover{border-color:var(--purple2);color:var(--purple2)}
+.pc-fill{background:linear-gradient(135deg,var(--purple),var(--purple3));border:none;color:white;box-shadow:0 4px 14px var(--purple-glow)}
+.pc-fill:hover{transform:translateY(-1px)}
+.pc-curr{background:transparent;border:1.5px solid var(--green);color:var(--green);cursor:default}
+
+/* PAYMENT MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:var(--card);border-radius:24px;padding:32px;max-width:440px;width:100%;position:relative;animation:rise .3s ease}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text2)}
+.modal-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.modal-sub{font-size:14px;color:var(--text2);margin-bottom:24px}
+.plan-summary{background:var(--bg);border-radius:14px;padding:16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.ps-name{font-size:15px;font-weight:700}
+.ps-amt{font-size:24px;font-weight:800;color:var(--purple2)}
+.qr-wrap{text-align:center;margin-bottom:20px}
+.qr-img{width:160px;height:160px;border-radius:12px;border:2px solid var(--border)}
+.qr-hint{font-size:12px;color:var(--text3);margin-top:8px}
+.upi-link-box{background:var(--purple-soft);border-radius:12px;padding:12px;text-align:center;margin-bottom:16px}
+.upi-link-text{font-size:12px;color:var(--purple2);font-family:monospace;word-break:break-all;margin-bottom:8px}
+.upi-apps{display:flex;gap:8px;justify-content:center}
+.upi-app-btn{padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--card);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--text)}
+.upi-app-btn:hover{border-color:var(--purple2);color:var(--purple2)}
+.confirm-section{border-top:1px solid var(--border);padding-top:16px}
+.confirm-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:10px}
+.screenshot-input{width:100%;padding:10px 14px;border-radius:10px;border:1.5px dashed var(--border);background:var(--bg);font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;text-align:center;transition:all .2s}
+.screenshot-input:hover{border-color:var(--purple2)}
+.ref-input{width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:14px;outline:none;margin-top:8px;transition:all .2s}
+.ref-input:focus{border-color:var(--purple2)}
+.submit-btn{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:12px;transition:all .2s;box-shadow:0 4px 14px var(--purple-glow)}
+.submit-btn:hover{transform:translateY(-1px)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.overlay2{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay2.show{display:block}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .content{padding:16px}
+  .price-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="overlay2" id="overlay" onclick="closeSB()"></div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal" id="payment-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">💳 Complete Payment</div>
+    <div class="modal-sub">Pay via UPI to upgrade your plan</div>
+    <div class="plan-summary">
+      <div>
+        <div class="ps-name" id="modal-plan-name">Growth Plan</div>
+        <div style="font-size:12px;color:var(--text3)">Monthly subscription</div>
+      </div>
+      <div class="ps-amt" id="modal-plan-amt">₹499</div>
+    </div>
+    <div class="qr-wrap">
+      <img class="qr-img" id="payment-qr" src="" alt="UPI QR Code">
+      <div class="qr-hint">Scan with any UPI app</div>
+    </div>
+    <div class="upi-link-box">
+      <div class="upi-link-text" id="upi-link-text"></div>
+      <div class="upi-apps">
+        <a class="upi-app-btn" id="gpay-link" href="#" target="_blank">GPay</a>
+        <a class="upi-app-btn" id="phonepe-link" href="#" target="_blank">PhonePe</a>
+        <a class="upi-app-btn" id="paytm-link" href="#" target="_blank">Paytm</a>
+      </div>
+    </div>
+    <div class="confirm-section">
+      <div class="confirm-title">After payment, enter your UPI reference number:</div>
+      <input class="ref-input" id="upi-ref" placeholder="e.g. 123456789012">
+      <button class="submit-btn" onclick="submitPayment()">✅ I've Paid — Submit</button>
+    </div>
+  </div>
+</div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">🤖</div>
+    <span class="logo-name">Agent<span>Setu</span></span>
+  </div>
+  <nav class="sb-nav">
+    <a class="nav-item" href="dashboard.html"><span class="nav-ico">🏠</span>Dashboard</a>
+    <a class="nav-item" href="agent-builder.html"><span class="nav-ico">✨</span>Build Agent</a>
+    <a class="nav-item" href="workflow.html"><span class="nav-ico">🔗</span>My Agents</a>
+    <a class="nav-item active" href="pricing.html"><span class="nav-ico">💎</span>Upgrade</a>
+    <a class="nav-item" href="deploy.html"><span class="nav-ico">🚀</span>Deploy</a>
+    <a class="nav-item" href="settings.html"><span class="nav-ico">⚙️</span>Settings</a>
+  </nav>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="icon-btn" id="menu-btn" onclick="toggleSB()" style="display:none">☰</button>
+      <span class="page-title">💎 Plans & Pricing</span>
+    </div>
+    <button class="icon-btn" onclick="Theme.toggle()">🌙</button>
+  </header>
+
+  <div class="content">
+
+    <div class="current-plan">
+      <div>
+        <div class="cp-label">Current Plan</div>
+        <div class="cp-name" id="current-plan-name">🆓 Free Plan</div>
+        <div class="cp-usage" id="current-plan-usage">0 / 500 messages used</div>
+      </div>
+      <button class="cp-btn" onclick="scrollToPricing()">⚡ Upgrade Now</button>
+    </div>
+
+    <div class="price-grid" id="pricing-grid">
+
+      <div class="pc" id="plan-free">
+        <div class="pc-name">🆓 Free</div>
+        <div class="pc-amt"><sup>₹</sup>0<sub>/mo</sub></div>
+        <div class="pc-note">Forever free</div>
+        <div class="pc-hr"></div>
+        <ul class="pc-list">
+          <li><span class="ck">✓</span>1 Agent + 5 Bots</li>
+          <li><span class="ck">✓</span>BYOK: 2 Agents + 10 Bots <span class="bk">BYOK</span></li>
+          <li><span class="ck">✓</span>500 messages/month</li>
+          <li><span class="ck">✓</span>Website embed</li>
+          <li><span class="ck">✓</span>Basic templates</li>
+        </ul>
+        <button class="pc-btn pc-out" onclick="selectPlan('free',0)">Current Plan</button>
+      </div>
+
+      <div class="pc" id="plan-starter">
+        <div class="pc-name">⭐ Starter</div>
+        <div class="pc-amt"><sup>₹</sup>299<sub>/mo</sub></div>
+        <div class="pc-note">For small businesses</div>
+        <div class="pc-hr"></div>
+        <ul class="pc-list">
+          <li><span class="ck">✓</span>5 Agents + 15 Bots</li>
+          <li><span class="ck">✓</span>1 Super Agent</li>
+          <li><span class="ck">✓</span>BYOK: 15 Agents + 45 Bots <span class="bk">BYOK</span></li>
+          <li><span class="ck">✓</span>5,000 messages/month</li>
+          <li><span class="ck">✓</span>Website + Telegram</li>
+          <li><span class="ck">✓</span>Basic Analytics</li>
+        </ul>
+        <button class="pc-btn pc-fill" onclick="selectPlan('starter',299)">Upgrade — ₹299/mo</button>
+      </div>
+
+      <div class="pc hot" id="plan-growth">
+        <div class="hot-tag">🔥 Most Popular</div>
+        <div class="pc-name">🚀 Growth</div>
+        <div class="pc-amt"><sup>₹</sup>499<sub>/mo</sub></div>
+        <div class="pc-note">For growing businesses</div>
+        <div class="pc-hr"></div>
+        <ul class="pc-list">
+          <li><span class="ck">✓</span>10 Agents + 100 Bots</li>
+          <li><span class="ck">✓</span>1 Super Agent</li>
+          <li><span class="ck">✓</span>BYOK: 30 Agents + 300 Bots <span class="bk">BYOK</span></li>
+          <li><span class="ck">✓</span>12,000 messages/month</li>
+          <li><span class="ck">✓</span>All platforms</li>
+          <li><span class="ck">✓</span>UPI in Agent ✅</li>
+          <li><span class="ck">✓</span>Full Analytics</li>
+        </ul>
+        <button class="pc-btn pc-fill" onclick="selectPlan('growth',499)">Upgrade — ₹499/mo</button>
+      </div>
+
+      <div class="pc" id="plan-pro">
+        <div class="pc-name">💼 Pro</div>
+        <div class="pc-amt"><sup>₹</sup>999<sub>/mo</sub></div>
+        <div class="pc-note">For professionals</div>
+        <div class="pc-hr"></div>
+        <ul class="pc-list">
+          <li><span class="ck">✓</span>25 Agents + 250 Bots</li>
+          <li><span class="ck">✓</span>3 Super Agents</li>
+          <li><span class="ck">✓</span>BYOK: 75 Agents + 750 Bots <span class="bk">BYOK</span></li>
+          <li><span class="ck">✓</span>25,000 messages/month</li>
+          <li><span class="ck">✓</span>All platforms</li>
+          <li><span class="ck">✓</span>Priority support</li>
+          <li><span class="ck">✓</span>GitHub push</li>
+          <li><span class="ck">✓</span>Advanced Analytics</li>
+        </ul>
+        <button class="pc-btn pc-fill" onclick="selectPlan('pro',999)">Upgrade — ₹999/mo</button>
+      </div>
+
+      <div class="pc" id="plan-ultra">
+        <div class="pc-name">💎 Ultra</div>
+        <div class="pc-amt"><sup>₹</sup>2,999<sub>/mo</sub></div>
+        <div class="pc-note">For agencies</div>
+        <div class="pc-hr"></div>
+        <ul class="pc-list">
+          <li><span class="ck">✓</span>Unlimited Agents + Bots</li>
+          <li><span class="ck">✓</span>Unlimited Super Agents</li>
+          <li><span class="ck">✓</span>Unlimited BYOK <span class="bk">BYOK</span></li>
+          <li><span class="ck">✓</span>Unlimited messages</li>
+          <li><span class="ck">✓</span>White label</li>
+          <li><span class="ck">✓</span>Custom domain</li>
+          <li><span class="ck">✓</span>Everything in Pro</li>
+        </ul>
+        <button class="pc-btn pc-fill" onclick="selectPlan('ultra',2999)">Upgrade — ₹2,999/mo</button>
+      </div>
+
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center">
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">💳 Payment via UPI</div>
+      <div style="font-size:13px;color:var(--text2)">We accept all UPI apps — GPay, PhonePe, Paytm, and more. Plans activate within 30 minutes of payment confirmation.</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+const app = initializeApp(AGENTSETU_CONFIG.firebase);
+const auth = getAuth(app);
+let currentUser = null;
+let selectedPlan = '';
+let selectedAmt = 0;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  currentUser = user;
+  const userData = await UserManager.getUser(user.uid);
+  if (userData) {
+    const plan = userData.plan || 'free';
+    const limits = UserManager.getPlanLimits(plan);
+    const used = userData.messages_used || 0;
+    const planNames = {free:'🆓 Free Plan',starter:'⭐ Starter Plan',growth:'🚀 Growth Plan',pro:'💼 Pro Plan',ultra:'💎 Ultra Plan'};
+    document.getElementById('current-plan-name').textContent = planNames[plan] || '🆓 Free Plan';
+    document.getElementById('current-plan-usage').textContent = `${used.toLocaleString()} / ${limits.messages.toLocaleString()} messages used`;
+    const planCard = document.getElementById(`plan-${plan}`);
+    if (planCard) {
+      planCard.classList.add('current');
+      const btn = planCard.querySelector('.pc-btn');
+      btn.className = 'pc-btn pc-curr';
+      btn.textContent = '✓ Current Plan';
+      btn.onclick = null;
+      const existing = planCard.querySelector('.hot-tag,.curr-tag');
+      if (existing) existing.remove();
+      const tag = document.createElement('div');
+      tag.className = 'curr-tag';
+      tag.textContent = '✓ Active';
+      planCard.appendChild(tag);
+    }
+  }
+});
+
+window.selectPlan = (plan, amount) => {
+  if (plan === 'free') return;
+  selectedPlan = plan;
+  selectedAmt = amount;
+  const planNames = {starter:'⭐ Starter Plan',growth:'🚀 Growth Plan',pro:'💼 Pro Plan',ultra:'💎 Ultra Plan'};
+  document.getElementById('modal-plan-name').textContent = planNames[plan];
+  document.getElementById('modal-plan-amt').textContent = `₹${amount.toLocaleString()}`;
+  const note = `AgentSetu ${plan.charAt(0).toUpperCase()+plan.slice(1)} Plan`;
+  const upiLink = UPI.generateLink(amount, note);
+  const qrUrl = UPI.generateQRUrl(amount, note);
+  document.getElementById('payment-qr').src = qrUrl;
+  document.getElementById('upi-link-text').textContent = upiLink;
+  document.getElementById('gpay-link').href = upiLink;
+  document.getElementById('phonepe-link').href = upiLink;
+  document.getElementById('paytm-link').href = upiLink;
+  document.getElementById('payment-modal').classList.add('show');
+};
+
+window.submitPayment = async () => {
+  const ref = document.getElementById('upi-ref').value.trim();
+  if (!ref) { alert('Please enter your UPI reference number'); return; }
+  if (!currentUser) return;
+  await db.insert('payments', {
+    user_id: currentUser.uid,
+    amount: selectedAmt,
+    plan: selectedPlan,
+    upi_ref: ref,
+    status: 'pending'
+  });
+  closeModal();
+  alert(`✅ Payment submitted!\n\nReference: ${ref}\n\nYour plan will be activated within 30 minutes after verification.\n\nThank you! 🙏`);
+};
+
+window.closeModal = () => document.getElementById('payment-modal').classList.remove('show');
+window.scrollToPricing = () => document.getElementById('pricing-grid').scrollIntoView({behavior:'smooth'});
+</script>
+<script>
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function closeSB(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+if(window.innerWidth<=768)document.getElementById('menu-btn').style.display='flex';
+</script>
+</body>
+</html>
