@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentSetu — My Agents</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FF;--card:#FFFFFF;--border:#E8E0FF;--purple:#6D28D9;--purple2:#7C3AED;--purple3:#8B5CF6;--purple-soft:#EDE9FE;--purple-glow:rgba(109,40,217,0.15);--green:#059669;--text:#0F0A1E;--text2:#6B5E8A;--text3:#9E8FC0;--shadow:0 4px 20px rgba(109,40,217,0.08);--sidebar:260px}
+[data-theme="dark"]{--bg:#0A0612;--card:#1A1130;--border:#2D1F50;--purple-soft:#1E1040;--text:#F5F0FF;--text2:#A890D0;--text3:#6B5E8A}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;transition:background .3s,color .3s}
+.sidebar{width:var(--sidebar);background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:18px;font-weight:800;color:var(--text)}
+.logo-name span{color:var(--purple2)}
+.sb-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:600;transition:all .2s;margin-bottom:2px}
+.nav-item:hover,.nav-item.active{background:var(--purple-soft);color:var(--purple2)}
+.nav-ico{width:20px;text-align:center;font-size:16px}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:18px;font-weight:800}
+.topbar-r{display:flex;gap:8px;align-items:center}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.icon-btn:hover{border-color:var(--purple)}
+.btn-new{padding:9px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none;transition:all .2s;box-shadow:0 4px 12px var(--purple-glow)}
+.btn-new:hover{transform:translateY(-1px)}
+.content{padding:24px;flex:1}
+.filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filter-btn{padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s}
+.filter-btn:hover{border-color:var(--purple2);color:var(--purple2)}
+.filter-btn.active{background:var(--purple-soft);border-color:var(--purple2);color:var(--purple2)}
+.hierarchy{display:flex;flex-direction:column;gap:16px}
+.super-block{background:var(--card);border:1.5px solid var(--purple2);border-radius:20px;overflow:hidden;box-shadow:0 0 0 4px var(--purple-soft)}
+.sb-head{background:linear-gradient(135deg,var(--purple),var(--purple3));padding:16px 20px;display:flex;align-items:center;gap:12px}
+.sb-ico{width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.sb-info{flex:1}
+.sb-name{font-size:16px;font-weight:800;color:white}
+.sb-desc{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px}
+.sb-actions{display:flex;gap:8px}
+.sb-btn{padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:white;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s}
+.sb-btn:hover{background:rgba(255,255,255,0.2)}
+.sb-body{padding:16px 20px}
+.agents-list{display:flex;flex-direction:column;gap:10px}
+.agent-block{background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.ab-head{padding:12px 16px;display:flex;align-items:center;gap:10px}
+.ab-ico{width:34px;height:34px;background:var(--purple-soft);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.ab-info{flex:1}
+.ab-name{font-size:14px;font-weight:700}
+.ab-desc{font-size:12px;color:var(--text2)}
+.ab-btns{display:flex;gap:6px}
+.ab-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;font-family:inherit;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;text-decoration:none;transition:all .2s}
+.ab-btn:hover{border-color:var(--purple2);color:var(--purple2)}
+.ab-btn.fill{background:var(--purple-soft);border-color:transparent;color:var(--purple2)}
+.ab-btn.fill:hover{background:var(--purple2);color:white}
+.bots-row{padding:0 16px 12px;display:flex;gap:8px;flex-wrap:wrap}
+.bot-chip{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:100px;background:var(--card);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text2)}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.standalone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;transition:all .3s}
+.sc:hover{border-color:var(--purple3);box-shadow:var(--shadow)}
+.sc-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.sc-ico{width:40px;height:40px;background:var(--purple-soft);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.sc-name{font-size:15px;font-weight:700}
+.sc-type{font-size:12px;color:var(--text3)}
+.sc-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.sc-chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;background:var(--purple-soft);color:var(--purple2)}
+.sc-btns{display:flex;gap:8px}
+.sc-btn{flex:1;padding:8px;border-radius:10px;border:1px solid var(--border);background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;text-decoration:none;text-align:center;transition:all .2s}
+.sc-btn:hover{border-color:var(--purple2);color:var(--purple2)}
+.sc-btn.fill{background:var(--purple-soft);border-color:transparent;color:var(--purple2)}
+.sc-btn.fill:hover{background:var(--purple2);color:white}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:24px}
+.section-title{font-size:16px;font-weight:800}
+.empty{text-align:center;padding:60px 24px}
+.empty-ico{font-size:52px;margin-bottom:14px}
+.empty-t{font-size:18px;font-weight:700;margin-bottom:8px}
+.empty-s{font-size:14px;color:var(--text2);margin-bottom:20px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay.show{display:block}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .content{padding:16px}
+  .standalone-grid{grid-template-columns:1fr}
+  .sb-actions{display:none}
+}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSB()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">🤖</div>
+    <span class="logo-name">Agent<span>Setu</span></span>
+  </div>
+  <nav class="sb-nav">
+    <a class="nav-item" href="dashboard.html"><span class="nav-ico">🏠</span>Dashboard</a>
+    <a class="nav-item" href="agent-builder.html"><span class="nav-ico">✨</span>Build Agent</a>
+    <a class="nav-item active" href="workflow.html"><span class="nav-ico">🔗</span>My Agents</a>
+    <a class="nav-item" href="pricing.html"><span class="nav-ico">💎</span>Upgrade</a>
+    <a class="nav-item" href="deploy.html"><span class="nav-ico">🚀</span>Deploy</a>
+    <a class="nav-item" href="settings.html"><span class="nav-ico">⚙️</span>Settings</a>
+  </nav>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="icon-btn" id="menu-btn" onclick="toggleSB()" style="display:none">☰</button>
+      <span class="page-title">🔗 My Agents</span>
+    </div>
+    <div class="topbar-r">
+      <button class="icon-btn" onclick="Theme.toggle()">🌙</button>
+      <a href="agent-builder.html" class="btn-new">✨ New Agent</a>
+    </div>
+  </header>
+  <div class="content">
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filter('all',this)">🔍 All</button>
+      <button class="filter-btn" onclick="filter('super',this)">🏆 Super Agents</button>
+      <button class="filter-btn" onclick="filter('agent',this)">🤖 Agents</button>
+      <button class="filter-btn" onclick="filter('bot',this)">💬 Bots</button>
+    </div>
+    <div id="main-content">
+      <div class="empty" id="empty-state">
+        <div class="empty-ico">🤖</div>
+        <div class="empty-t">No agents yet!</div>
+        <div class="empty-s">Build your first AI agent in minutes</div>
+        <a href="agent-builder.html" class="btn-new" style="display:inline-flex">✨ Build First Agent</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+const app = initializeApp(AGENTSETU_CONFIG.firebase);
+const auth = getAuth(app);
+let allAgents = [];
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  try {
+    const agents = await db.select('agents', `user_id=eq.${user.uid}&order=created_at.desc`);
+    if (agents && agents.length > 0) {
+      allAgents = agents;
+      document.getElementById('empty-state').style.display = 'none';
+      renderAll(agents);
+    }
+  } catch(e) { console.log('Loading...'); }
+});
+
+function renderAll(agents) {
+  const c = document.getElementById('main-content');
+  c.innerHTML = '';
+  const supers = agents.filter(a => a.is_super_agent);
+  const standalone = agents.filter(a => !a.is_super_agent);
+
+  if (supers.length > 0) {
+    const sh = document.createElement('div');
+    sh.className = 'section-head';
+    sh.innerHTML = `<div class="section-title">🏆 Super Agents</div>`;
+    c.appendChild(sh);
+    const hier = document.createElement('div');
+    hier.className = 'hierarchy';
+    supers.forEach(sa => {
+      const subAgents = tryParse(sa.sub_agents) || [];
+      const block = document.createElement('div');
+      block.className = 'super-block';
+      block.innerHTML = `
+        <div class="sb-head">
+          <div class="sb-ico">🏆</div>
+          <div class="sb-info">
+            <div class="sb-name">${sa.agent_name}</div>
+            <div class="sb-desc">${sa.description || sa.language}</div>
+          </div>
+          <div class="sb-actions">
+            <a href="agent-builder.html?id=${sa.id}" class="sb-btn">✏️ Edit</a>
+            <a href="deploy.html?id=${sa.id}&name=${encodeURIComponent(sa.agent_name)}" class="sb-btn">🚀 Deploy</a>
+          </div>
+        </div>
+        <div class="sb-body">
+          <div class="agents-list">
+            ${subAgents.length > 0 ? subAgents.map(sub => `
+              <div class="agent-block">
+                <div class="ab-head">
+                  <div class="ab-ico">🤖</div>
+                  <div class="ab-info">
+                    <div class="ab-name">${sub.name}</div>
+                    <div class="ab-desc">${sub.purpose || ''}</div>
+                  </div>
+                  <div class="ab-btns">
+                    <button class="ab-btn fill">Deploy</button>
+                  </div>
+                </div>
+                <div class="bots-row">
+                  ${(sub.bots||[]).map(b=>`<div class="bot-chip"><div class="live-dot"></div>${b}</div>`).join('')}
+                </div>
+              </div>`).join('') : '<div style="color:var(--text3);font-size:13px;padding:8px 0">No sub-agents yet. <a href="agent-builder.html" style="color:var(--purple2)">Add one →</a></div>'}
+          </div>
+        </div>`;
+      hier.appendChild(block);
+    });
+    c.appendChild(hier);
+  }
+
+  if (standalone.length > 0) {
+    const sh2 = document.createElement('div');
+    sh2.className = 'section-head';
+    sh2.innerHTML = `<div class="section-title">🤖 Agents & Bots</div>`;
+    c.appendChild(sh2);
+    const grid = document.createElement('div');
+    grid.className = 'standalone-grid';
+    standalone.forEach(a => {
+      const card = document.createElement('div');
+      card.className = 'sc';
+      const deploys = (a.deploy_type||'').split(',').filter(Boolean);
+      card.innerHTML = `
+        <div class="sc-head">
+          <div class="sc-ico">🤖</div>
+          <div>
+            <div class="sc-name">${a.agent_name}</div>
+            <div class="sc-type">${a.agent_type||'Agent'} • ${a.language||'English'}</div>
+          </div>
+        </div>
+        <div class="sc-chips">
+          ${deploys.map(d=>`<span class="sc-chip">${d}</span>`).join('')}
+        </div>
+        <div class="sc-btns">
+          <a href="agent-builder.html?id=${a.id}" class="sc-btn">✏️ Edit</a>
+          <a href="deploy.html?id=${a.id}&name=${encodeURIComponent(a.agent_name)}" class="sc-btn fill">🚀 Deploy</a>
+        </div>`;
+      grid.appendChild(card);
+    });
+    c.appendChild(grid);
+  }
+}
+
+function tryParse(str) { try { return JSON.parse(str); } catch(e) { return null; } }
+
+window.filter = (type, btn) => {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (type === 'all') { renderAll(allAgents); return; }
+  if (type === 'super') renderAll(allAgents.filter(a => a.is_super_agent));
+  if (type === 'agent') renderAll(allAgents.filter(a => !a.is_super_agent && a.agent_type !== 'bot'));
+  if (type === 'bot') renderAll(allAgents.filter(a => a.agent_type === 'bot'));
+};
+</script>
+<script>
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function closeSB(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+if(window.innerWidth<=768)document.getElementById('menu-btn').style.display='flex';
+</script>
+</body>
+</html>
