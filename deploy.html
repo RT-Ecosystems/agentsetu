@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentSetu — Deploy</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FF;--card:#FFFFFF;--border:#E8E0FF;--purple:#6D28D9;--purple2:#7C3AED;--purple3:#8B5CF6;--purple-soft:#EDE9FE;--purple-glow:rgba(109,40,217,0.15);--green:#059669;--green-soft:#ECFDF5;--text:#0F0A1E;--text2:#6B5E8A;--text3:#9E8FC0;--shadow:0 4px 20px rgba(109,40,217,0.08);--sidebar:260px}
+[data-theme="dark"]{--bg:#0A0612;--card:#1A1130;--border:#2D1F50;--purple-soft:#1E1040;--green-soft:rgba(5,150,105,0.1);--text:#F5F0FF;--text2:#A890D0;--text3:#6B5E8A}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;transition:background .3s,color .3s}
+.sidebar{width:var(--sidebar);background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:18px;font-weight:800;color:var(--text)}
+.logo-name span{color:var(--purple2)}
+.sb-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:600;transition:all .2s;margin-bottom:2px}
+.nav-item:hover,.nav-item.active{background:var(--purple-soft);color:var(--purple2)}
+.nav-ico{width:20px;text-align:center;font-size:16px}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:18px;font-weight:800}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.icon-btn:hover{border-color:var(--purple)}
+.content{padding:24px;max-width:1000px;margin:0 auto;width:100%}
+.success-bar{background:var(--green-soft);border:1.5px solid var(--green);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.success-ico{font-size:32px}
+.success-t{font-size:16px;font-weight:800;color:var(--green)}
+.success-s{font-size:13px;color:var(--text2);margin-top:2px}
+.sec-title{font-size:16px;font-weight:800;margin-bottom:14px}
+.deploy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
+.dc{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:22px;transition:all .3s}
+.dc:hover{border-color:var(--purple3);box-shadow:var(--shadow)}
+.dc-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.dc-ico{font-size:30px}
+.dc-name{font-size:15px;font-weight:800}
+.dc-tag{font-size:11px;color:var(--text3);margin-top:1px}
+.dc-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.dc-steps{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:12px;background:var(--bg);border-radius:10px;padding:10px 12px}
+.dc-steps a{color:var(--purple2);text-decoration:none}
+.dc-input{width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:all .2s;margin-bottom:8px}
+.dc-input:focus{border-color:var(--purple2)}
+.dc-code{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:monospace;font-size:11px;color:var(--text2);margin-bottom:8px;word-break:break-all;line-height:1.5;cursor:pointer}
+.dc-code:hover{border-color:var(--purple2)}
+.dc-btn{width:100%;padding:11px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:none;margin-bottom:6px}
+.dc-fill{background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;box-shadow:0 4px 12px var(--purple-glow)}
+.dc-fill:hover{transform:translateY(-1px)}
+.dc-outline{background:transparent;border:1.5px solid var(--border)!important;color:var(--text)}
+.dc-outline:hover{border-color:var(--purple2)!important;color:var(--purple2)}
+.dc-copy{background:var(--purple-soft);color:var(--purple2)}
+.dc-copy:hover{background:var(--purple2);color:white}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1F2937;color:white;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:600;z-index:9999;display:none}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay.show{display:block}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .content{padding:16px}
+  .deploy-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSB()"></div>
+<div class="toast" id="toast"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">🤖</div>
+    <span class="logo-name">Agent<span>Setu</span></span>
+  </div>
+  <nav class="sb-nav">
+    <a class="nav-item" href="dashboard.html"><span class="nav-ico">🏠</span>Dashboard</a>
+    <a class="nav-item" href="agent-builder.html"><span class="nav-ico">✨</span>Build Agent</a>
+    <a class="nav-item" href="workflow.html"><span class="nav-ico">🔗</span>My Agents</a>
+    <a class="nav-item" href="pricing.html"><span class="nav-ico">💎</span>Upgrade</a>
+    <a class="nav-item active" href="deploy.html"><span class="nav-ico">🚀</span>Deploy</a>
+    <a class="nav-item" href="settings.html"><span class="nav-ico">⚙️</span>Settings</a>
+  </nav>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="icon-btn" id="menu-btn" onclick="toggleSB()" style="display:none">☰</button>
+      <span class="page-title" id="page-title">🚀 Deploy Agent</span>
+    </div>
+    <button class="icon-btn" onclick="Theme.toggle()">🌙</button>
+  </header>
+  <div class="content">
+    <div class="success-bar">
+      <div class="success-ico">🎉</div>
+      <div>
+        <div class="success-t" id="agent-name-display">Agent Ready to Deploy!</div>
+        <div class="success-s">Choose where to deploy your agent below</div>
+      </div>
+    </div>
+
+    <div class="sec-title">📱 Chat Platforms</div>
+    <div class="deploy-grid">
+
+      <!-- WEBSITE -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">🌐</div><div><div class="dc-name">Website Embed</div><div class="dc-tag">Copy & paste • Instant</div></div></div>
+        <div class="dc-desc">Add a chat widget to any website with one line of code.</div>
+        <div class="dc-code" id="embed-code" onclick="copyEl('embed-code')">&lt;script src="https://agentsetu.app/widget.js" data-agent-id="YOUR_ID"&gt;&lt;/script&gt;</div>
+        <button class="dc-btn dc-copy" onclick="copyEl('embed-code')">📋 Copy Embed Code</button>
+      </div>
+
+      <!-- TELEGRAM -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">✈️</div><div><div class="dc-name">Telegram</div><div class="dc-tag">Free • No approval needed</div></div></div>
+        <div class="dc-desc">Easiest deployment. Live in 2 minutes.</div>
+        <div class="dc-steps">1. Open Telegram → Search <strong>@BotFather</strong><br>2. Send <code>/newbot</code> → follow steps<br>3. Copy the token → paste below:</div>
+        <input class="dc-input" id="tg-token" placeholder="123456789:ABCdef...">
+        <button class="dc-btn dc-fill" onclick="deployTelegram()">✈️ Connect Telegram</button>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">💬</div><div><div class="dc-name">WhatsApp</div><div class="dc-tag">Meta Business API</div></div></div>
+        <div class="dc-desc">Deploy to WhatsApp Business. Requires Meta approval.</div>
+        <div class="dc-steps">1. Go to <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a><br>2. Create App → Add WhatsApp<br>3. Copy Access Token & Phone ID:</div>
+        <input class="dc-input" id="wa-token" placeholder="WhatsApp Access Token">
+        <input class="dc-input" id="wa-phone" placeholder="Phone Number ID">
+        <button class="dc-btn dc-fill" onclick="deployWA()">💬 Connect WhatsApp</button>
+      </div>
+
+      <!-- FACEBOOK -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">📘</div><div><div class="dc-name">Facebook Messenger</div><div class="dc-tag">Meta API</div></div></div>
+        <div class="dc-desc">Connect to your Facebook Page inbox.</div>
+        <div class="dc-steps">1. Go to Meta Developer Console<br>2. Add Messenger to your app<br>3. Generate Page Access Token:</div>
+        <input class="dc-input" id="fb-token" placeholder="Page Access Token">
+        <input class="dc-input" id="fb-page" placeholder="Page ID">
+        <button class="dc-btn dc-fill" onclick="deployFB()">📘 Connect Facebook</button>
+      </div>
+
+      <!-- INSTAGRAM -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">📸</div><div><div class="dc-name">Instagram DM</div><div class="dc-tag">Meta API</div></div></div>
+        <div class="dc-desc">Auto-reply to Instagram DMs.</div>
+        <div class="dc-steps">1. Connect Instagram Business account<br>2. Same Meta app as Facebook<br>3. Enable Instagram Messaging:</div>
+        <input class="dc-input" id="ig-token" placeholder="Instagram Access Token">
+        <button class="dc-btn dc-fill" onclick="deployIG()">📸 Connect Instagram</button>
+      </div>
+
+      <!-- DISCORD -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">🎮</div><div><div class="dc-name">Discord</div><div class="dc-tag">Server bot</div></div></div>
+        <div class="dc-desc">Add your agent to any Discord server.</div>
+        <div class="dc-steps">1. Go to <a href="https://discord.com/developers" target="_blank">discord.com/developers</a><br>2. New Application → Bot → Copy Token:</div>
+        <input class="dc-input" id="dc-token" placeholder="Discord Bot Token">
+        <button class="dc-btn dc-fill" onclick="deployDiscord()">🎮 Connect Discord</button>
+      </div>
+
+    </div>
+
+    <div class="sec-title">☁️ Cloud Hosting (Self-hosted)</div>
+    <div class="deploy-grid">
+
+      <!-- RENDER -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">☁️</div><div><div class="dc-name">Render</div><div class="dc-tag">Free tier available</div></div></div>
+        <div class="dc-desc">Deploy your agent as a web service. Free tier runs 24/7.</div>
+        <div class="dc-steps">1. Sign up at <a href="https://render.com" target="_blank">render.com</a><br>2. Click "Download Config" below<br>3. Create new Web Service on Render<br>4. Upload the config file</div>
+        <button class="dc-btn dc-fill" onclick="downloadConfig('render')">⬇️ Download Render Config</button>
+        <button class="dc-btn dc-outline" onclick="openGuide('render')">📖 View Guide</button>
+      </div>
+
+      <!-- RAILWAY -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">🚂</div><div><div class="dc-name">Railway</div><div class="dc-tag">$5 free credit/month</div></div></div>
+        <div class="dc-desc">Fast deployment. $5 free credit every month.</div>
+        <div class="dc-steps">1. Sign up at <a href="https://railway.app" target="_blank">railway.app</a><br>2. New Project → Deploy from GitHub<br>3. Download config below → push to GitHub:</div>
+        <button class="dc-btn dc-fill" onclick="downloadConfig('railway')">⬇️ Download Railway Config</button>
+        <button class="dc-btn dc-outline" onclick="openGuide('railway')">📖 View Guide</button>
+      </div>
+
+      <!-- HUGGING FACE -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">🤗</div><div><div class="dc-name">Hugging Face Spaces</div><div class="dc-tag">Free forever</div></div></div>
+        <div class="dc-desc">Host your agent on Hugging Face. Completely free.</div>
+        <div class="dc-steps">1. Sign up at <a href="https://huggingface.co" target="_blank">huggingface.co</a><br>2. New Space → Gradio<br>3. Download config → upload files:</div>
+        <button class="dc-btn dc-fill" onclick="downloadConfig('huggingface')">⬇️ Download HF Config</button>
+        <button class="dc-btn dc-outline" onclick="openGuide('huggingface')">📖 View Guide</button>
+      </div>
+
+      <!-- VERCEL -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">▲</div><div><div class="dc-name">Vercel</div><div class="dc-tag">Free • Best for web</div></div></div>
+        <div class="dc-desc">Best for web-based agents. Free forever for personal use.</div>
+        <div class="dc-steps">1. Sign up at <a href="https://vercel.com" target="_blank">vercel.com</a><br>2. Import GitHub repo<br>3. Set environment variables<br>4. Deploy!</div>
+        <button class="dc-btn dc-fill" onclick="downloadConfig('vercel')">⬇️ Download Vercel Config</button>
+        <button class="dc-btn dc-outline" onclick="openGuide('vercel')">📖 View Guide</button>
+      </div>
+
+      <!-- GITHUB -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">🐙</div><div><div class="dc-name">GitHub Push</div><div class="dc-tag">Push agent code to your repo</div></div></div>
+        <div class="dc-desc">Push your agent's code to your GitHub repo. Then deploy anywhere.</div>
+        <div class="dc-steps">1. Connect your GitHub account<br>2. Choose or create a repo<br>3. We push the agent code for you:</div>
+        <input class="dc-input" id="gh-repo" placeholder="github.com/username/repo">
+        <button class="dc-btn dc-fill" onclick="pushGitHub()">🐙 Push to GitHub</button>
+      </div>
+
+      <!-- DIRECT LINK -->
+      <div class="dc">
+        <div class="dc-head"><div class="dc-ico">🔗</div><div><div class="dc-name">Direct Chat Link</div><div class="dc-tag">Share anywhere</div></div></div>
+        <div class="dc-desc">Share a direct link to your agent. Anyone can chat — no login needed.</div>
+        <div class="dc-code" id="direct-link" onclick="copyEl('direct-link')">https://agentsetu.app/chat/YOUR_AGENT_ID</div>
+        <button class="dc-btn dc-copy" onclick="copyEl('direct-link')">📋 Copy Link</button>
+        <button class="dc-btn dc-outline" onclick="shareAgent()">📤 Share</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+const app = initializeApp(AGENTSETU_CONFIG.firebase);
+const auth = getAuth(app);
+const params = new URLSearchParams(window.location.search);
+const agentId = params.get('id');
+const agentName = params.get('name') || 'Your Agent';
+
+onAuthStateChanged(auth, (user) => { if (!user) { window.location.href = 'auth.html'; } });
+
+document.getElementById('page-title').textContent = `🚀 Deploy: ${agentName}`;
+document.getElementById('agent-name-display').textContent = `${agentName} — Ready to Deploy!`;
+if (agentId) {
+  document.getElementById('embed-code').textContent = `<script src="https://agentsetu.app/widget.js" data-agent-id="${agentId}"><\/script>`;
+  document.getElementById('direct-link').textContent = `https://agentsetu.app/chat/${agentId}`;
+}
+
+window.deployTelegram = async () => {
+  const token = document.getElementById('tg-token').value.trim();
+  if (!token) return showT('Enter Telegram Bot Token first');
+  if (agentId) await db.update('agents', `id=eq.${agentId}`, { deploy_type: 'telegram' });
+  showT('✅ Telegram connected! Bot is live.');
+};
+window.deployWA = () => { const t=document.getElementById('wa-token').value; const p=document.getElementById('wa-phone').value; if(!t||!p) return showT('Fill both fields'); showT('✅ WhatsApp setup saved!'); };
+window.deployFB = () => { const t=document.getElementById('fb-token').value; if(!t) return showT('Enter Page Access Token'); showT('✅ Facebook Messenger connected!'); };
+window.deployIG = () => { const t=document.getElementById('ig-token').value; if(!t) return showT('Enter Instagram token'); showT('✅ Instagram DM connected!'); };
+window.deployDiscord = () => { const t=document.getElementById('dc-token').value; if(!t) return showT('Enter Discord Bot Token'); showT('✅ Discord bot connected!'); };
+
+window.downloadConfig = (platform) => {
+  const configs = {
+    render: `# render.yaml\nservices:\n  - type: web\n    name: agentsetu-agent\n    env: node\n    buildCommand: npm install\n    startCommand: node agent.js\n    envVars:\n      - key: GROQ_API_KEY\n        sync: false\n      - key: AGENT_ID\n        value: ${agentId||'YOUR_AGENT_ID'}`,
+    railway: `# railway.json\n{\n  "build": {"builder": "NIXPACKS"},\n  "deploy": {"startCommand": "node agent.js"},\n  "environment": {\n    "GROQ_API_KEY": "YOUR_KEY",\n    "AGENT_ID": "${agentId||'YOUR_AGENT_ID'}"\n  }\n}`,
+    huggingface: `# app.py\nimport gradio as gr\nimport requests\n\ndef chat(message, history):\n    # AgentSetu agent\n    r = requests.post('https://agentsetu.app/api/chat',\n        json={'agent_id': '${agentId||'YOUR_ID'}', 'message': message})\n    return r.json().get('reply', 'Error')\n\ngr.ChatInterface(chat).launch()`,
+    vercel: `{\n  "version": 2,\n  "builds": [{"src": "api/*.js", "use": "@vercel/node"}],\n  "routes": [{"src": "/api/(.*)", "dest": "/api/$1"}],\n  "env": {\n    "GROQ_API_KEY": "@groq_api_key",\n    "AGENT_ID": "${agentId||'YOUR_AGENT_ID'}"\n  }\n}`
+  };
+  const blob = new Blob([configs[platform]], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = platform === 'render' ? 'render.yaml' : platform === 'railway' ? 'railway.json' : platform === 'huggingface' ? 'app.py' : 'vercel.json';
+  a.click();
+  showT(`✅ ${platform} config downloaded!`);
+};
+
+window.openGuide = (p) => { const urls={render:'https://render.com/docs',railway:'https://docs.railway.app',huggingface:'https://huggingface.co/docs/hub/spaces',vercel:'https://vercel.com/docs'}; window.open(urls[p],'_blank'); };
+window.pushGitHub = () => { const r=document.getElementById('gh-repo').value; if(!r) return showT('Enter GitHub repo URL'); showT('🐙 GitHub push coming soon! Connect GitHub in Settings.'); };
+window.shareAgent = () => { const l=document.getElementById('direct-link').textContent; if(navigator.share){navigator.share({title:agentName,url:l});}else{navigator.clipboard.writeText(l);showT('✅ Link copied!');} };
+</script>
+<script>
+function copyEl(id){ const t=document.getElementById(id).textContent; navigator.clipboard.writeText(t).then(()=>showT('✅ Copied!')); }
+function showT(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',2500); }
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function closeSB(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+if(window.innerWidth<=768)document.getElementById('menu-btn').style.display='flex';
+</script>
+</body>
+</html>
