@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentSetu — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FF;--card:#FFFFFF;--border:#E8E0FF;--purple:#6D28D9;--purple2:#7C3AED;--purple3:#8B5CF6;--purple-soft:#EDE9FE;--purple-glow:rgba(109,40,217,0.15);--green:#059669;--red:#DC2626;--text:#0F0A1E;--text2:#6B5E8A;--text3:#9E8FC0;--shadow:0 20px 60px rgba(109,40,217,0.12)}
+[data-theme="dark"]{--bg:#0A0612;--card:#1A1130;--border:#2D1F50;--purple-soft:#1E1040;--text:#F5F0FF;--text2:#A890D0;--text3:#6B5E8A}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:background .3s,color .3s}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px)}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(109,40,217,0.12),transparent 70%);top:-150px;right:-100px}
+.orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,0.08),transparent 70%);bottom:10%;left:-80px}
+.topbar{position:fixed;top:0;left:0;right:0;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;z-index:10}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:18px;font-weight:800;color:var(--text)}
+.logo-name span{color:var(--purple2)}
+.theme-toggle{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.card{position:relative;z-index:1;background:var(--card);border:1px solid var(--border);border-radius:28px;padding:40px 36px;width:100%;max-width:440px;box-shadow:var(--shadow);animation:rise .5s ease}
+.card-title{font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.card-sub{font-size:14px;color:var(--text2);margin-bottom:28px}
+.tabs{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:24px;border:1px solid var(--border)}
+.tab{flex:1;padding:10px;border-radius:9px;border:none;background:transparent;font-family:inherit;font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s}
+.tab.active{background:var(--card);color:var(--purple2);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.social-btn{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);font-family:inherit;font-size:15px;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;margin-bottom:10px;text-decoration:none}
+.social-btn:hover{border-color:var(--purple2);color:var(--purple2);transform:translateY(-1px)}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text3);font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px}
+.field input{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:15px;outline:none;transition:all .2s}
+.field input:focus{border-color:var(--purple2);box-shadow:0 0 0 3px var(--purple-soft)}
+.field input::placeholder{color:var(--text3)}
+.phone-row{display:flex;gap:8px}
+.country-sel{padding:12px 12px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;outline:none}
+.btn-main{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px var(--purple-glow);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:hover{transform:translateY(-1px);box-shadow:0 8px 24px var(--purple-glow)}
+.btn-main:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.otp-row{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.otp-inp{width:46px;height:54px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:22px;font-weight:700;text-align:center;outline:none;transition:all .2s}
+.otp-inp:focus{border-color:var(--purple2);box-shadow:0 0 0 3px var(--purple-soft)}
+.msg{padding:11px 16px;border-radius:10px;font-size:14px;font-weight:500;margin-bottom:14px;display:none}
+.msg.err{background:#FEF2F2;border:1px solid #FECACA;color:var(--red)}
+.msg.ok{background:#ECFDF5;border:1px solid #A7F3D0;color:var(--green)}
+[data-theme="dark"] .msg.err{background:rgba(220,38,38,0.1);border-color:rgba(220,38,38,0.3)}
+[data-theme="dark"] .msg.ok{background:rgba(5,150,105,0.1);border-color:rgba(5,150,105,0.3)}
+.terms{text-align:center;font-size:12px;color:var(--text3);margin-top:16px;line-height:1.6}
+.terms a{color:var(--purple3);text-decoration:none}
+.hidden{display:none!important}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="topbar">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">🤖</div>
+    <span class="logo-name">Agent<span>Setu</span></span>
+  </a>
+  <button class="theme-toggle" onclick="Theme.toggle()">🌙</button>
+</div>
+
+<div class="card">
+  <h1 class="card-title">Welcome back 👋</h1>
+  <p class="card-sub">Sign in to your AgentSetu account</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login')">Sign In</button>
+    <button class="tab" onclick="switchTab('signup')">Create Account</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <!-- GOOGLE (Primary) -->
+  <button class="social-btn" onclick="signInGoogle()">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.32-8.16 2.32-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+    Continue with Google
+  </button>
+
+  <button class="social-btn" onclick="showPhone()">📱 Continue with Phone (OTP)</button>
+
+  <div class="divider">or with email</div>
+
+  <!-- LOGIN -->
+  <div id="login-form">
+    <div class="field"><label>Email</label><input type="email" id="l-email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="l-pass" placeholder="Your password"></div>
+    <button class="btn-main" onclick="loginEmail()" id="l-btn">Sign In</button>
+    <p style="text-align:center;font-size:13px;margin-top:12px"><a href="#" onclick="forgotPass()" style="color:var(--purple2);text-decoration:none;font-weight:600">Forgot password?</a></p>
+  </div>
+
+  <!-- SIGNUP -->
+  <div id="signup-form" class="hidden">
+    <div class="field"><label>Full Name</label><input type="text" id="s-name" placeholder="Your Name"></div>
+    <div class="field"><label>Email</label><input type="email" id="s-email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="s-pass" placeholder="Min 8 characters"></div>
+    <button class="btn-main" onclick="signupEmail()" id="s-btn">Create Free Account</button>
+  </div>
+
+  <!-- PHONE -->
+  <div id="phone-form" class="hidden">
+    <div class="field">
+      <label>Phone Number</label>
+      <div class="phone-row">
+        <select class="country-sel" id="cc">
+          <option value="+91">🇮🇳 +91</option>
+          <option value="+1">🇺🇸 +1</option>
+          <option value="+44">🇬🇧 +44</option>
+          <option value="+971">🇦🇪 +971</option>
+          <option value="+65">🇸🇬 +65</option>
+        </select>
+        <input type="tel" id="ph-num" placeholder="9876543210" style="flex:1">
+      </div>
+    </div>
+    <div id="recaptcha-container"></div>
+    <button class="btn-main" onclick="sendOTP()" id="otp-btn">Send OTP</button>
+    <div id="otp-section" class="hidden" style="margin-top:16px">
+      <p style="font-size:13px;color:var(--text2);text-align:center;margin-bottom:12px">Enter 6-digit OTP</p>
+      <div class="otp-row">
+        <input class="otp-inp" maxlength="1" oninput="otpNext(this,0)">
+        <input class="otp-inp" maxlength="1" oninput="otpNext(this,1)">
+        <input class="otp-inp" maxlength="1" oninput="otpNext(this,2)">
+        <input class="otp-inp" maxlength="1" oninput="otpNext(this,3)">
+        <input class="otp-inp" maxlength="1" oninput="otpNext(this,4)">
+        <input class="otp-inp" maxlength="1" oninput="otpNext(this,5)">
+      </div>
+      <button class="btn-main" onclick="verifyOTP()" id="verify-btn">Verify OTP</button>
+    </div>
+  </div>
+
+  <p class="terms">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
+</div>
+
+<script src="config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber, sendPasswordResetEmail, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const app = initializeApp(AGENTSETU_CONFIG.firebase);
+const auth = getAuth(app);
+let confirmResult = null;
+
+// Already logged in? → dashboard
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    await UserManager.syncUser(user);
+    window.location.href = 'dashboard.html';
+  }
+});
+
+function showMsg(text, type='err') {
+  const m = document.getElementById('msg');
+  m.textContent = text;
+  m.className = `msg ${type}`;
+  m.style.display = 'block';
+  setTimeout(() => m.style.display = 'none', 4000);
+}
+
+function setLoad(id, on, label='') {
+  const b = document.getElementById(id);
+  b.disabled = on;
+  b.innerHTML = on ? '<span class="spinner"></span>' : (label || b.dataset.label || b.textContent);
+  if (label) b.dataset.label = label;
+}
+
+window.signInGoogle = async () => {
+  try {
+    const r = await signInWithPopup(auth, new GoogleAuthProvider());
+    await UserManager.syncUser(r.user);
+    showMsg('Welcome! Redirecting...', 'ok');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  } catch(e) { showMsg('Google sign in failed. Try again.'); }
+};
+
+window.loginEmail = async () => {
+  const email = document.getElementById('l-email').value.trim();
+  const pass = document.getElementById('l-pass').value;
+  if (!email || !pass) return showMsg('Please fill all fields');
+  setLoad('l-btn', true, 'Sign In');
+  try {
+    const r = await signInWithEmailAndPassword(auth, email, pass);
+    await UserManager.syncUser(r.user);
+    showMsg('Welcome back!', 'ok');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  } catch(e) { showMsg('Invalid email or password'); }
+  finally { setLoad('l-btn', false); }
+};
+
+window.signupEmail = async () => {
+  const name = document.getElementById('s-name').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  const pass = document.getElementById('s-pass').value;
+  if (!name || !email || !pass) return showMsg('Please fill all fields');
+  if (pass.length < 8) return showMsg('Password must be at least 8 characters');
+  setLoad('s-btn', true, 'Create Free Account');
+  try {
+    const r = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(r.user, { displayName: name });
+    await UserManager.syncUser(r.user);
+    showMsg('Account created!', 'ok');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  } catch(e) {
+    showMsg(e.code === 'auth/email-already-in-use' ? 'Email already registered' : e.message);
+  } finally { setLoad('s-btn', false); }
+};
+
+window.sendOTP = async () => {
+  const cc = document.getElementById('cc').value;
+  const num = document.getElementById('ph-num').value.trim();
+  if (!num) return showMsg('Enter your phone number');
+  setLoad('otp-btn', true, 'Send OTP');
+  try {
+    if (!window.rcv) window.rcv = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
+    confirmResult = await signInWithPhoneNumber(auth, cc + num, window.rcv);
+    document.getElementById('otp-section').classList.remove('hidden');
+    showMsg('OTP sent!', 'ok');
+  } catch(e) { showMsg('Failed to send OTP. Check number and try again.'); }
+  finally { setLoad('otp-btn', false); }
+};
+
+window.verifyOTP = async () => {
+  const code = [...document.querySelectorAll('.otp-inp')].map(i => i.value).join('');
+  if (code.length < 6) return showMsg('Enter complete 6-digit OTP');
+  setLoad('verify-btn', true, 'Verify OTP');
+  try {
+    const r = await confirmResult.confirm(code);
+    await UserManager.syncUser(r.user);
+    showMsg('Verified!', 'ok');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  } catch(e) { showMsg('Wrong OTP. Try again.'); }
+  finally { setLoad('verify-btn', false); }
+};
+
+window.forgotPass = async () => {
+  const email = document.getElementById('l-email').value.trim();
+  if (!email) return showMsg('Enter your email first');
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showMsg('Reset link sent!', 'ok');
+  } catch(e) { showMsg('Email not found'); }
+};
+</script>
+
+<script>
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', (t==='login'&&i===0)||(t==='signup'&&i===1)));
+  document.getElementById('login-form').classList.toggle('hidden', t!=='login');
+  document.getElementById('signup-form').classList.toggle('hidden', t!=='signup');
+  document.getElementById('phone-form').classList.add('hidden');
+  document.querySelector('.card-title').textContent = t==='login' ? 'Welcome back 👋' : 'Create account 🚀';
+  document.querySelector('.card-sub').textContent = t==='login' ? 'Sign in to your AgentSetu account' : 'Join AgentSetu — free forever plan';
+}
+function showPhone() {
+  ['login-form','signup-form'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('phone-form').classList.remove('hidden');
+}
+function otpNext(el, idx) {
+  if (el.value && idx < 5) document.querySelectorAll('.otp-inp')[idx+1].focus();
+}
+</script>
+</body>
+</html>
