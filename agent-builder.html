@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentSetu — Build Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FF;--card:#FFFFFF;--border:#E8E0FF;--purple:#6D28D9;--purple2:#7C3AED;--purple3:#8B5CF6;--purple-soft:#EDE9FE;--purple-glow:rgba(109,40,217,0.15);--green:#059669;--text:#0F0A1E;--text2:#6B5E8A;--text3:#9E8FC0;--sidebar:260px}
+[data-theme="dark"]{--bg:#0A0612;--card:#1A1130;--border:#2D1F50;--purple-soft:#1E1040;--text:#F5F0FF;--text2:#A890D0;--text3:#6B5E8A}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;transition:background .3s,color .3s}
+.sidebar{width:var(--sidebar);background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:18px;font-weight:800;color:var(--text)}
+.logo-name span{color:var(--purple2)}
+.sb-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:600;transition:all .2s;margin-bottom:2px}
+.nav-item:hover,.nav-item.active{background:var(--purple-soft);color:var(--purple2)}
+.nav-ico{width:20px;text-align:center;font-size:16px}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-l{display:flex;align-items:center;gap:10px}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.back-btn:hover{border-color:var(--purple);color:var(--purple2)}
+.topbar-title{font-size:17px;font-weight:800}
+.topbar-r{display:flex;gap:8px}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.icon-btn:hover{border-color:var(--purple)}
+
+/* TYPE SELECTOR */
+.type-bar{padding:12px 20px;border-bottom:1px solid var(--border);background:var(--card);display:flex;gap:8px;flex-shrink:0;overflow-x:auto}
+.type-btn{padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.type-btn:hover{border-color:var(--purple2);color:var(--purple2)}
+.type-btn.active{background:var(--purple-soft);border-color:var(--purple2);color:var(--purple2)}
+
+/* CHAT */
+.chat-wrap{display:flex;flex:1;overflow:hidden}
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.chat-area{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.msg-row{display:flex;gap:10px;animation:rise .3s ease}
+.msg-row.user{flex-direction:row-reverse}
+.msg-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px}
+.msg-av.bot{background:linear-gradient(135deg,var(--purple),var(--purple3))}
+.msg-av.user{background:var(--purple-soft);color:var(--purple2);font-weight:700;font-size:13px}
+.msg-bubble{max-width:72%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.65}
+.msg-bubble.bot{background:var(--card);border:1px solid var(--border);border-radius:4px 18px 18px 18px}
+.msg-bubble.user{background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;border-radius:18px 4px 18px 18px}
+.msg-time{font-size:11px;color:var(--text3);margin-top:4px}
+.msg-row.user .msg-time{text-align:right}
+
+/* AGENT CREATED CARD */
+.agent-card-result{background:var(--card);border:1.5px solid var(--purple2);border-radius:16px;padding:18px;margin-top:8px;box-shadow:0 4px 20px var(--purple-glow)}
+.acr-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.acr-ico{width:44px;height:44px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.acr-name{font-size:16px;font-weight:700}
+.acr-type{font-size:12px;color:var(--text3);margin-top:2px}
+.acr-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.acr-detail{background:var(--bg);border-radius:10px;padding:10px 12px}
+.acr-dl{font-size:11px;color:var(--text3);font-weight:600;margin-bottom:2px}
+.acr-dv{font-size:13px;font-weight:700}
+.acr-sub-agents{margin-bottom:14px}
+.acr-sub-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px}
+.acr-sub-list{display:flex;flex-direction:column;gap:6px}
+.acr-sub-item{background:var(--purple-soft);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;color:var(--purple2);display:flex;align-items:center;gap:8px}
+.acr-btns{display:flex;gap:8px}
+.acr-btn{flex:1;padding:10px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;text-decoration:none;display:block}
+.acr-out{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.acr-out:hover{border-color:var(--purple2);color:var(--purple2)}
+.acr-fill{background:linear-gradient(135deg,var(--purple),var(--purple3));border:none;color:white}
+.acr-fill:hover{transform:translateY(-1px)}
+
+/* SUGGESTIONS */
+.sugs{display:flex;flex-wrap:wrap;gap:8px;padding:10px 20px;flex-shrink:0}
+.sug{padding:8px 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.sug:hover{border-color:var(--purple2);color:var(--purple2);background:var(--purple-soft)}
+
+/* INPUT */
+.input-area{padding:14px 20px;background:var(--card);border-top:1px solid var(--border);flex-shrink:0}
+.input-row{display:flex;gap:10px;align-items:flex-end}
+.input-box{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:12px 16px;font-family:inherit;font-size:14px;color:var(--text);resize:none;outline:none;max-height:100px;transition:border-color .2s;line-height:1.5}
+.input-box:focus{border-color:var(--purple2)}
+.input-box::placeholder{color:var(--text3)}
+.send-btn{width:44px;height:44px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;box-shadow:0 4px 12px var(--purple-glow)}
+.send-btn:hover{transform:translateY(-1px)}
+.send-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.typing{display:flex;gap:4px;align-items:center;padding:12px 16px}
+.typing span{width:7px;height:7px;background:var(--text3);border-radius:50%;animation:bounce .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay.show{display:block}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .msg-bubble{max-width:85%}
+  .sugs{overflow-x:auto;flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSB()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">🤖</div>
+    <span class="logo-name">Agent<span>Setu</span></span>
+  </div>
+  <nav class="sb-nav">
+    <a class="nav-item" href="dashboard.html"><span class="nav-ico">🏠</span>Dashboard</a>
+    <a class="nav-item active" href="agent-builder.html"><span class="nav-ico">✨</span>Build Agent</a>
+    <a class="nav-item" href="workflow.html"><span class="nav-ico">🔗</span>My Agents</a>
+    <a class="nav-item" href="pricing.html"><span class="nav-ico">💎</span>Upgrade</a>
+    <a class="nav-item" href="settings.html"><span class="nav-ico">⚙️</span>Settings</a>
+  </nav>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-l">
+      <a href="dashboard.html" class="back-btn">← Back</a>
+      <span class="topbar-title">✨ Build Agent</span>
+    </div>
+    <div class="topbar-r">
+      <button class="icon-btn" onclick="clearChat()" title="Clear">🗑️</button>
+      <button class="icon-btn" onclick="Theme.toggle()">🌙</button>
+    </div>
+  </header>
+
+  <!-- TYPE SELECTOR -->
+  <div class="type-bar">
+    <button class="type-btn active" onclick="setType('super',this)">🏆 Super Agent</button>
+    <button class="type-btn" onclick="setType('agent',this)">🤖 AI Agent</button>
+    <button class="type-btn" onclick="setType('bot',this)">💬 Simple Bot</button>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="chat-main">
+      <div class="chat-area" id="chat-area">
+        <div class="msg-row">
+          <div class="msg-av bot">🤖</div>
+          <div>
+            <div class="msg-bubble bot" id="welcome-msg">
+              <strong>Hey! I'm your AgentSetu Builder 👋</strong><br><br>
+              I'll help you build a powerful <strong>Super Agent</strong> with multiple agents and bots inside.<br><br>
+              Just tell me what you need — be as detailed as you want! For example:<br><br>
+              <em>"Build a super agent for my restaurant that handles orders on WhatsApp, customer support on Telegram, and collects payments via UPI in Hindi"</em>
+            </div>
+            <div class="msg-time">Just now</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUGGESTIONS -->
+      <div class="sugs" id="sugs">
+        <button class="sug" onclick="useSug(this)">🍽️ Restaurant Super Agent (Hindi)</button>
+        <button class="sug" onclick="useSug(this)">🏥 Clinic Agent with appointment booking</button>
+        <button class="sug" onclick="useSug(this)">🛍️ E-commerce agent with payment</button>
+        <button class="sug" onclick="useSug(this)">📚 Education agent for students</button>
+        <button class="sug" onclick="useSug(this)">💼 HR agent for job applications</button>
+        <button class="sug" onclick="useSug(this)">🏠 Real estate agent in Telugu</button>
+      </div>
+
+      <!-- INPUT -->
+      <div class="input-area">
+        <div class="input-row">
+          <textarea class="input-box" id="user-input" placeholder="Describe your agent in detail..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendMsg()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const app = initializeApp(AGENTSETU_CONFIG.firebase);
+const auth = getAuth(app);
+let currentUser = null;
+let chatHistory = [];
+let currentType = 'super';
+let conversationPhase = 'initial';
+let collectedInfo = {};
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  currentUser = user;
+
+  // Check URL params
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get('type');
+  const template = params.get('template');
+  if (type) {
+    document.querySelectorAll('.type-btn').forEach((b,i) => {
+      const types = ['super','agent','bot'];
+      b.classList.toggle('active', types[i] === type);
+    });
+    setType(type, null);
+  }
+  if (template) {
+    setTimeout(() => {
+      document.getElementById('user-input').value = `Build a ${template} agent`;
+      sendMsg();
+    }, 500);
+  }
+});
+
+window.setType = (type, btn) => {
+  currentType = type;
+  chatHistory = [];
+  conversationPhase = 'initial';
+  collectedInfo = {};
+  if (btn) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const welcomes = {
+    super: `<strong>Build a Super Agent 🏆</strong><br><br>A Super Agent manages multiple AI agents, each with their own bots. Perfect for businesses that need a complete AI workforce.<br><br>Tell me about your business and what you need — I'll design the entire system for you!`,
+    agent: `<strong>Build an AI Agent 🤖</strong><br><br>An Agent can manage multiple bots and handle complex tasks. Great for a specific department or function.<br><br>What kind of agent do you need?`,
+    bot: `<strong>Build a Simple Bot 💬</strong><br><br>A quick chatbot for a specific purpose — customer support, FAQ, lead collection, and more.<br><br>Describe your bot and I'll create it instantly!`
+  };
+  document.getElementById('chat-area').innerHTML = `
+    <div class="msg-row">
+      <div class="msg-av bot">🤖</div>
+      <div><div class="msg-bubble bot">${welcomes[type]}</div><div class="msg-time">Just now</div></div>
+    </div>`;
+  document.getElementById('sugs').style.display = 'flex';
+};
+
+window.sendMsg = async () => {
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if (!text || !currentUser) return;
+
+  addMsg(text, 'user');
+  input.value = '';
+  autoResize(input);
+  document.getElementById('sugs').style.display = 'none';
+  document.getElementById('send-btn').disabled = true;
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+
+  try {
+    let response = '';
+
+    if (conversationPhase === 'initial') {
+      // First message — gather info
+      const systemPrompt = `You are AgentSetu's AI builder assistant. The user wants to build a ${currentType === 'super' ? 'Super Agent (multi-agent system)' : currentType === 'agent' ? 'AI Agent' : 'simple chatbot'}.
+
+Your job: Have a BRIEF conversation to gather requirements. Ask 2-3 focused questions about:
+1. Business type and purpose
+2. Languages needed (default: English)
+3. Platforms (WhatsApp, Telegram, Website etc.)
+4. Special features (UPI payment, booking, etc.)
+
+Be conversational, friendly, and concise. After gathering enough info (2-3 exchanges), say "Perfect! I have everything I need. Building your ${currentType} now..." and set READY=true in your response.
+
+Current info gathered: ${JSON.stringify(collectedInfo)}
+Type being built: ${currentType}
+
+Respond naturally. If user gave enough detail already, go straight to building.`;
+
+      response = await AI.groqChat([
+        { role: 'system', content: systemPrompt },
+        ...chatHistory
+      ]);
+
+      if (response.includes('READY=true') || response.includes('Building your') || chatHistory.length >= 6) {
+        conversationPhase = 'building';
+        response = response.replace('READY=true', '').trim();
+        removeTyping();
+        addMsg(response, 'bot');
+        chatHistory.push({ role: 'assistant', content: response });
+        showTyping();
+        await buildAgent();
+        return;
+      }
+    } else if (conversationPhase === 'building') {
+      await buildAgent();
+      return;
+    } else {
+      response = await AI.groqChat([
+        { role: 'system', content: `You are AgentSetu's helpful assistant. Answer questions about the built agent and help with modifications.` },
+        ...chatHistory
+      ]);
+    }
+
+    removeTyping();
+    addMsg(response, 'bot');
+    chatHistory.push({ role: 'assistant', content: response });
+
+  } catch(e) {
+    removeTyping();
+    addMsg('Sorry, something went wrong. Please check your connection and try again.', 'bot');
+  }
+  document.getElementById('send-btn').disabled = false;
+};
+
+async function buildAgent() {
+  const buildPrompt = `Based on this conversation, create a complete ${currentType} configuration. Respond ONLY with valid JSON (no markdown):
+
+Conversation: ${chatHistory.map(m => m.role + ': ' + m.content).join('\n')}
+
+For super agent return:
+{
+  "agent_name": "...",
+  "agent_type": "super",
+  "description": "...",
+  "language": "English",
+  "is_super_agent": true,
+  "sub_agents": [
+    {
+      "name": "...",
+      "purpose": "...",
+      "bots": ["WhatsApp", "Telegram"]
+    }
+  ],
+  "system_prompt": "...",
+  "deploy_type": "whatsapp,telegram,website"
+}
+
+For agent return:
+{
+  "agent_name": "...",
+  "agent_type": "...",
+  "description": "...",
+  "language": "English",
+  "is_super_agent": false,
+  "bots_list": "whatsapp,telegram",
+  "system_prompt": "...",
+  "deploy_type": "whatsapp"
+}`;
+
+  try {
+    // Use DeepSeek for building (smarter)
+    const raw = await AI.deepseekChat([{ role: 'user', content: buildPrompt }]);
+    let config;
+    try {
+      config = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    } catch(e) {
+      // Fallback to Groq
+      const raw2 = await AI.groqChat([{ role: 'user', content: buildPrompt }]);
+      config = JSON.parse(raw2.replace(/```json|```/g,'').trim());
+    }
+
+    // Check template cache
+    const cached = await AI.checkTemplate(config.agent_type, config.language);
+    const fromCache = !!cached;
+    if (cached && !config.system_prompt) config.system_prompt = cached.base_prompt;
+    else if (!cached && config.system_prompt) await AI.saveTemplate(config.agent_type, config.language, config.system_prompt);
+
+    // Save to Supabase
+    const saved = await db.insert('agents', {
+      user_id: currentUser.uid,
+      agent_name: config.agent_name,
+      agent_type: config.agent_type,
+      description: config.description,
+      language: config.language,
+      is_super_agent: config.is_super_agent || false,
+      sub_agents: JSON.stringify(config.sub_agents || []),
+      bots_list: config.bots_list || config.deploy_type || '',
+      system_prompt: config.system_prompt,
+      deploy_type: config.deploy_type || ''
+    });
+
+    removeTyping();
+    const agentId = saved?.[0]?.id;
+    showAgentCard(config, agentId, fromCache);
+    conversationPhase = 'done';
+
+  } catch(e) {
+    removeTyping();
+    addMsg('I had trouble building the agent. Could you describe what you need again with more details?', 'bot');
+    conversationPhase = 'initial';
+  }
+  document.getElementById('send-btn').disabled = false;
+}
+
+function showAgentCard(config, agentId, fromCache) {
+  const area = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = 'msg-row';
+  const subAgentsHtml = config.sub_agents?.length ? `
+    <div class="acr-sub-agents">
+      <div class="acr-sub-title">Sub Agents (${config.sub_agents.length}):</div>
+      <div class="acr-sub-list">
+        ${config.sub_agents.map(a => `<div class="acr-sub-item">🤖 ${a.name} — ${a.purpose} (${(a.bots||[]).join(', ')})</div>`).join('')}
+      </div>
+    </div>` : '';
+
+  div.innerHTML = `
+    <div class="msg-av bot">🤖</div>
+    <div style="max-width:85%;flex:1">
+      <div class="msg-bubble bot">
+        ✅ ${config.agent_name} created! ${fromCache ? '⚡ Used cached template — saved API tokens!' : ''}
+      </div>
+      <div class="agent-card-result">
+        <div class="acr-header">
+          <div class="acr-ico">${config.is_super_agent ? '🏆' : '🤖'}</div>
+          <div>
+            <div class="acr-name">${config.agent_name}</div>
+            <div class="acr-type">${config.is_super_agent ? 'Super Agent' : 'AI Agent'} • ${config.language}</div>
+          </div>
+        </div>
+        <div class="acr-details">
+          <div class="acr-detail"><div class="acr-dl">Language</div><div class="acr-dv">${config.language}</div></div>
+          <div class="acr-detail"><div class="acr-dl">Type</div><div class="acr-dv">${config.agent_type}</div></div>
+          <div class="acr-detail"><div class="acr-dl">Deploy</div><div class="acr-dv">${config.deploy_type||'Not set'}</div></div>
+          <div class="acr-detail"><div class="acr-dl">Sub Agents</div><div class="acr-dv">${config.sub_agents?.length||0}</div></div>
+        </div>
+        ${subAgentsHtml}
+        <div class="acr-btns">
+          <a href="workflow.html?id=${agentId||''}" class="acr-btn acr-out">🔗 View Workflow</a>
+          <a href="deploy.html?id=${agentId||''}&name=${encodeURIComponent(config.agent_name)}" class="acr-btn acr-fill">🚀 Deploy</a>
+        </div>
+      </div>
+      <div class="msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+    </div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function addMsg(text, sender) {
+  const area = document.getElementById('chat-area');
+  const initial = currentUser?.displayName?.[0]?.toUpperCase() || 'U';
+  const div = document.createElement('div');
+  div.className = `msg-row ${sender}`;
+  div.innerHTML = `
+    ${sender==='bot'?'<div class="msg-av bot">🤖</div>':''}
+    <div>
+      <div class="msg-bubble ${sender}">${text}</div>
+      <div class="msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+    </div>
+    ${sender==='user'?`<div class="msg-av user">${initial}</div>`:''}`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function showTyping() {
+  const area = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = 'msg-row';
+  div.id = 'typing';
+  div.innerHTML = `<div class="msg-av bot">🤖</div><div class="msg-bubble bot"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+function removeTyping() { document.getElementById('typing')?.remove(); }
+window.clearChat = () => { setType(currentType, null); document.getElementById('sugs').style.display='flex'; };
+</script>
+
+<script>
+function useSug(el){ document.getElementById('user-input').value=el.textContent.trim().substring(2); sendMsg(); }
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function closeSB(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+</script>
+</body>
+</html>
