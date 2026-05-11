@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentSetu — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FF;--card:#FFFFFF;--border:#E8E0FF;--purple:#6D28D9;--purple2:#7C3AED;--purple3:#8B5CF6;--purple-soft:#EDE9FE;--purple-glow:rgba(109,40,217,0.15);--green:#059669;--green-soft:#ECFDF5;--red:#DC2626;--text:#0F0A1E;--text2:#6B5E8A;--text3:#9E8FC0;--shadow:0 4px 20px rgba(109,40,217,0.08);--sidebar:260px}
+[data-theme="dark"]{--bg:#0A0612;--card:#1A1130;--border:#2D1F50;--purple-soft:#1E1040;--green-soft:rgba(5,150,105,0.1);--text:#F5F0FF;--text2:#A890D0;--text3:#6B5E8A}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;transition:background .3s,color .3s}
+.sidebar{width:var(--sidebar);background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--purple),var(--purple3));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:18px;font-weight:800;color:var(--text)}
+.logo-name span{color:var(--purple2)}
+.sb-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:600;transition:all .2s;margin-bottom:2px}
+.nav-item:hover,.nav-item.active{background:var(--purple-soft);color:var(--purple2)}
+.nav-ico{width:20px;text-align:center;font-size:16px}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.page-title{font-size:18px;font-weight:800}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.icon-btn:hover{border-color:var(--purple)}
+.content{padding:24px;max-width:800px;margin:0 auto;width:100%}
+
+/* SECTIONS */
+.settings-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:16px}
+.ss-title{font-size:16px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.ss-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--text2);margin-bottom:6px}
+.field-row{display:flex;gap:8px}
+.field input{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:all .2s}
+.field input:focus{border-color:var(--purple2);box-shadow:0 0 0 3px var(--purple-soft)}
+.field-hint{font-size:12px;color:var(--text3);margin-top:5px}
+.field-hint a{color:var(--purple2);text-decoration:none}
+.field-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;margin-top:5px}
+.status-ok{color:var(--green)}
+.status-err{color:var(--red)}
+.btn-save{padding:11px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple3));color:white;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px var(--purple-glow)}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 8px 20px var(--purple-glow)}
+.btn-test{padding:11px 20px;border-radius:11px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-test:hover{border-color:var(--purple2);color:var(--purple2)}
+.btn-danger{padding:11px 24px;border-radius:11px;border:1.5px solid var(--red);background:transparent;color:var(--red);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-danger:hover{background:var(--red);color:white}
+
+/* PROFILE */
+.profile-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.profile-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple3));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:white;flex-shrink:0}
+.profile-info{flex:1}
+.profile-name{font-size:18px;font-weight:800}
+.profile-email{font-size:14px;color:var(--text2);margin-top:2px}
+.profile-plan{display:inline-flex;align-items:center;gap:6px;background:var(--purple-soft);color:var(--purple2);font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;margin-top:6px}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info{flex:1}
+.toggle-label{font-size:14px;font-weight:700}
+.toggle-desc{font-size:12px;color:var(--text2);margin-top:2px}
+.toggle-sw{width:44px;height:24px;border-radius:12px;background:var(--border);position:relative;transition:background .2s;cursor:pointer;flex-shrink:0}
+.toggle-sw.on{background:var(--purple2)}
+.toggle-knob{width:18px;height:18px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle-sw.on .toggle-knob{left:23px}
+
+/* UPI PREVIEW */
+.upi-preview{background:var(--purple-soft);border-radius:12px;padding:16px;margin-top:12px}
+.upi-qr{width:120px;height:120px;border-radius:12px;background:white;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.upi-qr img{width:110px;height:110px;border-radius:8px}
+.upi-link-box{background:var(--card);border-radius:8px;padding:8px 12px;font-size:11px;font-family:monospace;word-break:break-all;color:var(--purple2);text-align:center;margin-top:8px}
+
+/* MSG TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1F2937;color:white;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:600;z-index:9999;display:none;animation:rise .3s ease}
+@keyframes rise{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .content{padding:16px}
+}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.overlay.show{display:block}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSB()"></div>
+<div class="toast" id="toast"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">🤖</div>
+    <span class="logo-name">Agent<span>Setu</span></span>
+  </div>
+  <nav class="sb-nav">
+    <a class="nav-item" href="dashboard.html"><span class="nav-ico">🏠</span>Dashboard</a>
+    <a class="nav-item" href="agent-builder.html"><span class="nav-ico">✨</span>Build Agent</a>
+    <a class="nav-item" href="workflow.html"><span class="nav-ico">🔗</span>My Agents</a>
+    <a class="nav-item" href="pricing.html"><span class="nav-ico">💎</span>Upgrade</a>
+    <a class="nav-item" href="deploy.html"><span class="nav-ico">🚀</span>Deploy</a>
+    <a class="nav-item active" href="settings.html"><span class="nav-ico">⚙️</span>Settings</a>
+  </nav>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="icon-btn" id="menu-btn" onclick="toggleSB()" style="display:none">☰</button>
+      <span class="page-title">⚙️ Settings</span>
+    </div>
+    <button class="icon-btn" onclick="Theme.toggle()">🌙</button>
+  </header>
+
+  <div class="content">
+
+    <!-- PROFILE -->
+    <div class="settings-section">
+      <div class="ss-title">👤 Profile</div>
+      <div class="ss-sub">Your account information</div>
+      <div class="profile-row">
+        <div class="profile-av" id="prof-av">?</div>
+        <div class="profile-info">
+          <div class="profile-name" id="prof-name">Loading...</div>
+          <div class="profile-email" id="prof-email">...</div>
+          <div class="profile-plan" id="prof-plan">🆓 Free Plan</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Display Name</label>
+        <div class="field-row">
+          <input type="text" id="disp-name" placeholder="Your name">
+          <button class="btn-save" onclick="saveName()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- API KEYS — BYOK -->
+    <div class="settings-section">
+      <div class="ss-title">🔑 API Keys (BYOK)</div>
+      <div class="ss-sub">Your keys are AES-256 encrypted. Only your browser can decrypt them — even we cannot see them.</div>
+
+      <div class="field">
+        <label>Groq API Key <span style="font-size:11px;color:var(--green);font-weight:600">FREE — Recommended</span></label>
+        <div class="field-row">
+          <input type="password" id="groq-key" placeholder="gsk_...">
+          <button class="btn-test" onclick="testKey('groq')">Test</button>
+          <button class="btn-save" onclick="saveKey('groq')">Save</button>
+        </div>
+        <div class="field-hint">Get free at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — 14,400 requests/day free</div>
+        <div class="field-status" id="groq-status"></div>
+      </div>
+
+      <div class="field">
+        <label>DeepSeek API Key <span style="font-size:11px;color:var(--purple2);font-weight:600">Best for coding agents</span></label>
+        <div class="field-row">
+          <input type="password" id="deepseek-key" placeholder="sk-...">
+          <button class="btn-test" onclick="testKey('deepseek')">Test</button>
+          <button class="btn-save" onclick="saveKey('deepseek')">Save</button>
+        </div>
+        <div class="field-hint">Get at <a href="https://platform.deepseek.com" target="_blank">platform.deepseek.com</a> — 50M tokens/month free</div>
+        <div class="field-status" id="deepseek-status"></div>
+      </div>
+
+      <div class="field">
+        <label>Sarvam AI Key <span style="font-size:11px;color:var(--purple2);font-weight:600">22 Indian Languages</span></label>
+        <div class="field-row">
+          <input type="password" id="sarvam-key" placeholder="Your Sarvam key">
+          <button class="btn-save" onclick="saveKey('sarvam')">Save</button>
+        </div>
+        <div class="field-hint">Get at <a href="https://dashboard.sarvam.ai" target="_blank">dashboard.sarvam.ai</a></div>
+        <div class="field-status" id="sarvam-status"></div>
+      </div>
+
+      <div style="background:var(--purple-soft);border-radius:12px;padding:14px;font-size:13px;color:var(--purple2)">
+        🔐 <strong>End-to-End Encrypted:</strong> Keys are encrypted in your browser using AES-256 before being stored. Your plain keys never leave your device.
+      </div>
+    </div>
+
+    <!-- UPI SETTINGS -->
+    <div class="settings-section">
+      <div class="ss-title">💳 UPI Payment</div>
+      <div class="ss-sub">Add UPI to receive payments through your bots</div>
+      <div class="field">
+        <label>Your UPI ID</label>
+        <input type="text" id="upi-id-inp" placeholder="yourname@upi" oninput="updateUPIPreview()">
+      </div>
+      <div class="field">
+        <label>Display Name</label>
+        <input type="text" id="upi-name-inp" placeholder="Your Name or Business Name" oninput="updateUPIPreview()">
+      </div>
+      <div class="upi-preview" id="upi-preview" style="display:none">
+        <div class="upi-qr"><img id="upi-qr-img" src="" alt="QR"></div>
+        <div class="upi-link-box" id="upi-link-box"></div>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn-save" onclick="saveUPI()">Save UPI Settings</button>
+      </div>
+    </div>
+
+    <!-- APPEARANCE -->
+    <div class="settings-section">
+      <div class="ss-title">🎨 Appearance</div>
+      <div class="ss-sub">Customize how AgentSetu looks</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Dark Mode</div>
+          <div class="toggle-desc">Switch between light and dark theme</div>
+        </div>
+        <div class="toggle-sw" id="dark-toggle" onclick="toggleDark()"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="settings-section">
+      <div class="ss-title">⚠️ Danger Zone</div>
+      <div class="ss-sub">Irreversible actions — be careful</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-danger" onclick="clearKeys()">🗑️ Clear All API Keys</button>
+        <button class="btn-danger" onclick="signOut()">🚪 Sign Out</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, updateProfile, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const app = initializeApp(AGENTSETU_CONFIG.firebase);
+const auth = getAuth(app);
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  currentUser = user;
+
+  const name = user.displayName || user.email?.split('@')[0] || 'User';
+  document.getElementById('prof-av').textContent = name[0].toUpperCase();
+  document.getElementById('prof-name').textContent = name;
+  document.getElementById('prof-email').textContent = user.email || user.phoneNumber || '';
+  document.getElementById('disp-name').value = name;
+
+  const userData = await UserManager.getUser(user.uid);
+  if (userData) {
+    const plan = userData.plan || 'free';
+    document.getElementById('prof-plan').textContent = `${plan === 'free' ? '🆓 Free' : plan === 'starter' ? '⭐ Starter' : plan === 'growth' ? '🚀 Growth' : plan === 'pro' ? '💼 Pro' : '💎 Ultra'} Plan`;
+
+    if (userData.upi_id) {
+      document.getElementById('upi-id-inp').value = userData.upi_id;
+      document.getElementById('upi-name-inp').value = userData.upi_name || name;
+      updateUPIPreview();
+    }
+  }
+
+  // Load encrypted keys
+  loadSavedKeys(user.uid);
+
+  // Theme toggle state
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  document.getElementById('dark-toggle').classList.toggle('on', isDark);
+});
+
+async function loadSavedKeys(uid) {
+  const encKey = `agentsetu_keys_${uid}`;
+  const stored = localStorage.getItem(encKey);
+  if (!stored) return;
+  try {
+    const decrypted = await Crypto.decrypt(stored, uid + AGENTSETU_CONFIG.encryptionKey);
+    const keys = JSON.parse(decrypted);
+    if (keys.groq) { document.getElementById('groq-key').value = keys.groq; setStatus('groq', true); }
+    if (keys.deepseek) { document.getElementById('deepseek-key').value = keys.deepseek; setStatus('deepseek', true); }
+    if (keys.sarvam) { document.getElementById('sarvam-key').value = keys.sarvam; setStatus('sarvam', true); }
+  } catch(e) {}
+}
+
+async function getStoredKeys(uid) {
+  const encKey = `agentsetu_keys_${uid}`;
+  const stored = localStorage.getItem(encKey);
+  if (!stored) return {};
+  try {
+    const dec = await Crypto.decrypt(stored, uid + AGENTSETU_CONFIG.encryptionKey);
+    return JSON.parse(dec);
+  } catch(e) { return {}; }
+}
+
+window.saveKey = async (type) => {
+  if (!currentUser) return;
+  const val = document.getElementById(`${type}-key`).value.trim();
+  if (!val) { showToast('Please enter a key first'); return; }
+
+  const existing = await getStoredKeys(currentUser.uid);
+  existing[type] = val;
+  const encrypted = await Crypto.encrypt(JSON.stringify(existing), currentUser.uid + AGENTSETU_CONFIG.encryptionKey);
+  localStorage.setItem(`agentsetu_keys_${currentUser.uid}`, encrypted);
+  setStatus(type, true);
+  showToast(`✅ ${type.charAt(0).toUpperCase()+type.slice(1)} API key saved & encrypted!`);
+};
+
+window.testKey = async (type) => {
+  const val = document.getElementById(`${type}-key`).value.trim();
+  if (!val) { showToast('Enter a key first'); return; }
+  showToast('Testing...');
+  try {
+    let ok = false;
+    if (type === 'groq') {
+      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${val}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'llama3-8b-8192', messages: [{ role: 'user', content: 'Hi' }], max_tokens: 5 })
+      });
+      ok = r.ok;
+    } else if (type === 'deepseek') {
+      const r = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${val}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: 'Hi' }], max_tokens: 5 })
+      });
+      ok = r.ok;
+    }
+    setStatus(type, ok);
+    showToast(ok ? `✅ ${type} key is working!` : `❌ Invalid ${type} key`);
+  } catch(e) { showToast('Connection error. Try again.'); }
+};
+
+window.saveName = async () => {
+  if (!currentUser) return;
+  const name = document.getElementById('disp-name').value.trim();
+  if (!name) return;
+  await updateProfile(currentUser, { displayName: name });
+  await db.update('users', `id=eq.${currentUser.uid}`, { name });
+  document.getElementById('prof-name').textContent = name;
+  showToast('✅ Name updated!');
+};
+
+window.saveUPI = async () => {
+  if (!currentUser) return;
+  const upiId = document.getElementById('upi-id-inp').value.trim();
+  const upiName = document.getElementById('upi-name-inp').value.trim();
+  if (!upiId) { showToast('Enter UPI ID first'); return; }
+  await db.update('users', `id=eq.${currentUser.uid}`, { upi_id: upiId, upi_name: upiName });
+  showToast('✅ UPI settings saved!');
+};
+
+window.clearKeys = async () => {
+  if (!confirm('Clear all saved API keys? This cannot be undone.')) return;
+  localStorage.removeItem(`agentsetu_keys_${currentUser.uid}`);
+  ['groq','deepseek','sarvam'].forEach(t => {
+    document.getElementById(`${t}-key`).value = '';
+    setStatus(t, null);
+  });
+  showToast('✅ All keys cleared');
+};
+
+window.signOut = async () => {
+  await fbSignOut(auth);
+  window.location.href = 'auth.html';
+};
+
+function setStatus(type, ok) {
+  const el = document.getElementById(`${type}-status`);
+  if (ok === null) { el.innerHTML = ''; return; }
+  el.innerHTML = ok
+    ? '<span class="status-ok">✓ Key is valid and working</span>'
+    : '<span class="status-err">✗ Invalid key</span>';
+}
+
+window.updateUPIPreview = () => {
+  const id = document.getElementById('upi-id-inp').value.trim();
+  const name = document.getElementById('upi-name-inp').value.trim();
+  const preview = document.getElementById('upi-preview');
+  if (!id) { preview.style.display='none'; return; }
+  preview.style.display = 'block';
+  const link = UPI.generateLink(0, 'AgentSetu Payment', id, name);
+  const qr = UPI.generateQRUrl(0, 'AgentSetu Payment');
+  document.getElementById('upi-qr-img').src = qr;
+  document.getElementById('upi-link-box').textContent = link;
+};
+
+window.toggleDark = () => {
+  Theme.toggle();
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  document.getElementById('dark-toggle').classList.toggle('on', isDark);
+};
+</script>
+
+<script>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display='none', 2500);
+}
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function closeSB(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+if(window.innerWidth<=768)document.getElementById('menu-btn').style.display='flex';
+</script>
+</body>
+</html>
