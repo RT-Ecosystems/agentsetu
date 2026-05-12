@@ -1,48 +1,46 @@
 // ============================================
 // AgentSetu — config.js
-// यहाँ नीचे अपनी actual values डालो
-// Vercel ENV से match करो
 // ============================================
 
 const AGENTSETU_CONFIG = {
 
-  // 🔥 FIREBASE — Firebase Console → Project Settings → Your Apps
+  // ✅ FIREBASE — filled
   firebase: {
-    apiKey:            "FIREBASE_API_KEY_HERE",
-    authDomain:        "FIREBASE_AUTH_DOMAIN_HERE",
-    projectId:         "FIREBASE_PROJECT_ID_HERE",
-    storageBucket:     "FIREBASE_STORAGE_BUCKET_HERE",
-    messagingSenderId: "FIREBASE_MESSAGING_SENDER_ID_HERE",
-    appId:             "FIREBASE_APP_ID_HERE"
+    apiKey:            "AIzaSyDvBi_wj9P8l1cQhlbLCmX5ZgLS-8OlCA0",
+    authDomain:        "botsetu-67839.firebaseapp.com",
+    projectId:         "botsetu-67839",
+    storageBucket:     "botsetu-67839.firebasestorage.app",
+    messagingSenderId: "560696459155",
+    appId:             "1:560696459155:web:a51b61537dac625a3f3266"
   },
 
-  // 🗄️ SUPABASE — Supabase → Project Settings → API
+  // ✏️ SUPABASE — तुम भरो
   supabase: {
-    url:     "SUPABASE_URL_HERE",
-    anonKey: "SUPABASE_ANON_KEY_HERE"
+    url:     "https://uzlskyrcjptpbaxpikih.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6bHNreXJjanB0cGJheHBpa2loIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTUwNDQsImV4cCI6MjA5MzkzMTA0NH0.jSy-xZ4EsRpX9EsHxvQbZqeFbDg1LUvybQV6G5tZJ7A"
   },
 
-  // 🤖 GROQ — console.groq.com/keys
+  // ✏️ GROQ — तुम भरो
   groq: {
-    key:   "GROQ_API_KEY_HERE",
+    key:   "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",
     model: "llama3-8b-8192"
   },
 
-  // 🧠 DEEPSEEK — platform.deepseek.com
+  // ✏️ DEEPSEEK — तुम भरो
   deepseek: {
-    key:   "DEEPSEEK_API_KEY_HERE",
+    key:   "sk-8fce47b5fcb84c53b8c0dce68b685df2",
     model: "deepseek-chat"
   },
 
-  // 🇮🇳 SARVAM — dashboard.sarvam.ai
+  // ✏️ SARVAM — तुम भरो
   sarvam: {
-    key: "SARVAM_API_KEY_HERE"
+    key: "sk_78ebkicn_R2FjNdoSexoCnR3eAn4qSzRP"
   },
 
-  // 💳 UPI — तुम्हारी UPI ID
+  // ✏️ UPI — तुम भरो
   upi: {
-    id:   "UPI_ID_HERE",
-    name: "UPI_NAME_HERE"
+    id:   "ashutoshjignabari@okaxis",
+    name: "Ashutosh Singh"
   },
 
   encryptionKey: "AgentSetu2024SecureKey32CharLong"
@@ -80,7 +78,7 @@ class SupabaseClient {
 const db = new SupabaseClient();
 
 // ============================================
-// ENCRYPTION — AES-256 Browser Crypto
+// ENCRYPTION — AES-256
 // ============================================
 const Crypto = {
   async getKey(password) {
@@ -112,26 +110,43 @@ const Crypto = {
 };
 
 // ============================================
-// USER MANAGER — Firebase + Supabase sync
+// USER MANAGER
 // ============================================
 const UserManager = {
   async syncUser(firebaseUser) {
     if (!firebaseUser) return null;
     const existing = await db.select('users', `id=eq.${firebaseUser.uid}`);
     if (existing && existing.length > 0) return existing[0];
-    const newUser = { id: firebaseUser.uid, email: firebaseUser.email || '', name: firebaseUser.displayName || 'User', plan: 'free', messages_used: 0 };
+    const newUser = {
+      id: firebaseUser.uid,
+      email: firebaseUser.email || '',
+      name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+      plan: 'free',
+      messages_used: 0
+    };
     await db.insert('users', newUser);
     return newUser;
   },
-  async getUser(uid) { const d = await db.select('users', `id=eq.${uid}`); return d?.[0] || null; },
-  async updatePlan(uid, plan) { return db.update('users', `id=eq.${uid}`, { plan }); },
+  async getUser(uid) {
+    const d = await db.select('users', `id=eq.${uid}`);
+    return d?.[0] || null;
+  },
+  async updatePlan(uid, plan) {
+    return db.update('users', `id=eq.${uid}`, { plan });
+  },
   getPlanLimits(plan) {
-    return { free:{agents:1,bots:5,superAgents:0,messages:500}, starter:{agents:5,bots:15,superAgents:1,messages:5000}, growth:{agents:10,bots:100,superAgents:1,messages:12000}, pro:{agents:25,bots:250,superAgents:3,messages:25000}, ultra:{agents:999,bots:9999,superAgents:999,messages:999999} }[plan] || {agents:1,bots:5,superAgents:0,messages:500};
+    return {
+      free:    { agents:1, bots:5, superAgents:0, messages:500 },
+      starter: { agents:5, bots:15, superAgents:1, messages:5000 },
+      growth:  { agents:10, bots:100, superAgents:1, messages:12000 },
+      pro:     { agents:25, bots:250, superAgents:3, messages:25000 },
+      ultra:   { agents:999, bots:9999, superAgents:999, messages:999999 }
+    }[plan] || { agents:1, bots:5, superAgents:0, messages:500 };
   }
 };
 
 // ============================================
-// AI MANAGER — Groq + DeepSeek
+// AI MANAGER
 // ============================================
 const AI = {
   async groqChat(messages, userKey = null) {
@@ -143,7 +158,7 @@ const AI = {
         body: JSON.stringify({ model: AGENTSETU_CONFIG.groq.model, messages, max_tokens: 1000 })
       });
       return (await r.json()).choices?.[0]?.message?.content || '';
-    } catch(e) { return 'AI connection error. Check API key.'; }
+    } catch(e) { return 'AI connection error. Check API key in Settings.'; }
   },
   async deepseekChat(messages, userKey = null) {
     const key = userKey || AGENTSETU_CONFIG.deepseek.key;
@@ -156,8 +171,13 @@ const AI = {
       return (await r.json()).choices?.[0]?.message?.content || '';
     } catch(e) { return this.groqChat(messages); }
   },
-  async checkTemplate(type, lang) { const d = await db.select('bot_templates', `template_type=eq.${type}&language=eq.${lang}&limit=1`); return d?.[0] || null; },
-  async saveTemplate(type, lang, prompt) { await db.insert('bot_templates', { template_type: type, language: lang, base_prompt: prompt, usage_count: 1 }); }
+  async checkTemplate(type, lang) {
+    const d = await db.select('bot_templates', `template_type=eq.${type}&language=eq.${lang}&limit=1`);
+    return d?.[0] || null;
+  },
+  async saveTemplate(type, lang, prompt) {
+    await db.insert('bot_templates', { template_type: type, language: lang, base_prompt: prompt, usage_count: 1 });
+  }
 };
 
 // ============================================
@@ -176,8 +196,20 @@ const UPI = {
 // THEME
 // ============================================
 const Theme = {
-  init() { const s = localStorage.getItem('agentsetu-theme')||'light'; document.documentElement.dataset.theme=s; this.updateIcon(s); },
-  toggle() { const n = document.documentElement.dataset.theme==='dark'?'light':'dark'; document.documentElement.dataset.theme=n; localStorage.setItem('agentsetu-theme',n); this.updateIcon(n); },
-  updateIcon(t) { document.querySelectorAll('.theme-toggle,.theme-btn').forEach(b=>b.textContent=t==='dark'?'☀️':'🌙'); }
+  init() {
+    const s = localStorage.getItem('agentsetu-theme') || 'light';
+    document.documentElement.dataset.theme = s;
+    this.updateIcon(s);
+  },
+  toggle() {
+    const n = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = n;
+    localStorage.setItem('agentsetu-theme', n);
+    this.updateIcon(n);
+  },
+  updateIcon(t) {
+    document.querySelectorAll('.theme-toggle,.theme-btn').forEach(b => b.textContent = t === 'dark' ? '☀️' : '🌙');
+  }
 };
 Theme.init();
+        
